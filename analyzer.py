@@ -19,10 +19,12 @@ def kodu_analiz_et(dosya_yolu):
     prompt = f"Sen kıdemli bir yazılım mimarısın. Aşağıdaki kodu SOLID ve temiz kod kurallarına göre analiz et: \n\n{kod_icerigi}"
 
     # 3. Yanıtı yeni yöntemle al
+    # response çağrısını şu şekilde değiştir:
     response = client.models.generate_content(
-        model="gemini-1.5-flash",
+        model="gemini-1.5-flash",  # Eğer hata devam ederse "gemini-1.5-flash-002" dene
         contents=prompt
     )
+
     return response.text
 
 

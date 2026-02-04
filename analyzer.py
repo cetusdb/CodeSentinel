@@ -16,8 +16,17 @@ def kodu_analiz_et(dosya_yolu):
         kod_icerigi = f.read()
 
     # AI'ya talimat (Prompt)
-    prompt = f"Sen kıdemli bir yazılım mimarısın. Aşağıdaki kodu SOLID ve temiz kod kurallarına göre analiz et: \n\n{kod_icerigi}"
+    prompt = f"""
+        Sen kıdemli bir yazılım mimarısın. Aşağıdaki kodu analiz et ve sonucu tam olarak şu formatta döndür:
 
+        1. MİMARİ PUAN: (10 üzerinden bir not ver)
+        2. KRİTİK HATALAR: (Eğer varsa güvenlik veya mantık hataları)
+        3. SOLID PRENSİPLERİ: (Hangi prensiplere uyulmuş, hangileri ihlal edilmiş?)
+        4. İYİLEŞTİRME ÖNERİSİ: (Kodu daha profesyonel yapmak için 1 somut tavsiye)
+
+        Analiz edilecek kod:
+        {kod_icerigi}
+        """
     # 3. Yanıtı yeni yöntemle al
     # response çağrısını şu şekilde değiştir:
     response = client.models.generate_content(

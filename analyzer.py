@@ -1,4 +1,4 @@
-import google.generativeai as genai
+from google import genai
 import os
 from dotenv import load_dotenv
 
@@ -6,9 +6,8 @@ from dotenv import load_dotenv
 load_dotenv()
 api_key = os.getenv("GEMINI_API_KEY")
 
-# 2. Gemini'yi yapılandır
-genai.configure(api_key=api_key)
-model = genai.GenerativeModel('gemini-1.5-flash')
+# 2. Yeni SDK ile Client oluştur
+client = genai.Client(api_key=api_key)
 
 
 def kodu_analiz_et(dosya_yolu):
@@ -16,22 +15,18 @@ def kodu_analiz_et(dosya_yolu):
     with open(dosya_yolu, "r", encoding="utf-8") as f:
         kod_icerigi = f.read()
 
-    # AI'ya gönderilecek talimat (Prompt)
-    prompt = f"""
-    Sen kıdemli bir yazılım mimarısın. Aşağıdaki kodu SOLID prensipleri ve 
-    temiz kod kuralları açısından incele. Kısa ve öz bir rapor hazırla.
+    # AI'ya talimat (Prompt)
+    prompt = f"Sen kıdemli bir yazılım mimarısın. Aşağıdaki kodu SOLID ve temiz kod kurallarına göre analiz et: \n\n{kod_icerigi}"
 
-    Analiz edilecek kod:
-    {kod_icerigi}
-    """
-
-    # Yanıtı al
-    response = model.generate_content(prompt)
+    # 3. Yanıtı yeni yöntemle al
+    response = client.models.generate_content(
+        model="gemini-1.5-flash",
+        contents=prompt
+    )
     return response.text
 
 
-# Test etmek için: Projendeki bir dosyayı analiz ettir
-# (Örneğin venv içindeki bir dosyayı veya yeni oluşturduğun bir dosyayı seçebilirsin)
+# Çalıştır
 rapor = kodu_analiz_et("analyzer.py")
 print("--- MIMARI ANALIZ RAPORU ---")
 print(rapor)

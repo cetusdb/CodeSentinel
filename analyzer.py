@@ -31,7 +31,7 @@ def kodu_analiz_et(dosya_yolu):
     # response çağrısını şu şekilde değiştir:
     # 3. Yanıtı yeni yöntemle al
     response = client.models.generate_content(
-        model="gemini-1.5-flash",  # Hata devam ederse "models/gemini-1.5-flash" olarak dene
+        model="models/gemini-1.5-flash",  # Hata devam ederse "models/gemini-1.5-flash" olarak dene
         contents=prompt
     )
 
